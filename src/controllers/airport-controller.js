@@ -8,14 +8,14 @@ async function createAirport(req, res) {
         return res.status(201).json({
             data: airports,
             success: true,
-            arr: {},
+            err: {},
             description: 'Successfully created the airports'
         })
     } catch (error) {
         return res.status(500).json({
             data: {},
             success: false,
-            arr: error,
+            err: error,
             description: 'Failed to create the airports'
         });
     }
@@ -27,14 +27,14 @@ async function deleteAirport(req, res) {
         return res.status(200).json({
             data: airport,
             success: true,
-            arr: {},
+            err: {},
             description: 'Successfully deleted the airport'
         })
     } catch (error) {
         return res.status(500).json({
             data: {},
             success: false,
-            arr: error,
+            err: error,
             description: 'Failed to delete the airport'
         });
     }
@@ -50,14 +50,14 @@ async function updateAirport(req, res) {
         return res.status(200).json({
             data: airport,
             success: true,
-            arr: {},
+            err: {},
             description: 'Successfully updated the airport'
         })
     } catch (error) {
         return res.status(500).json({
             data: {},
             success: false,
-            arr: error,
+            err: error,
             description: 'Failed to update the airport'
         });
     }
@@ -69,14 +69,14 @@ async function getAirport(req, res) {
         return res.status(200).json({
             data: airport,
             success: true,
-            arr: {},
+            err: {},
             description: 'Successfully fetched the airport'
         })
     } catch (error) {
         return res.status(500).json({
             data: {},
             success: false,
-            arr: error,
+            err: error,
             description: 'Failed to fetch the airport'
         });
     }
@@ -88,14 +88,14 @@ async function getAirports(req, res) {
         return res.status(200).json({
             data: airports,
             success: true,
-            arr: {},
+            err: {},
             description: 'Successfully fetched the airports'
         })
     } catch (error) {
         return res.status(500).json({
             data: {},
             success: false,
-            arr: error,
+            err: error,
             description: 'Failed to fetch the airports'
         });
     }

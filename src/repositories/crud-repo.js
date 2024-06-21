@@ -1,3 +1,6 @@
+const { StatusCodes } = require('http-status-codes');
+const AppError = require('../utils/errors/app-error');
+
 class CrudRepo {
     constructor (model){
         this.model = model;
@@ -8,7 +11,13 @@ class CrudRepo {
             const response = await this.model.bulkCreate(data);
             return response;
         } catch (error) {
-            console.log("Something went wrong while creating data in repo layer");
+            if (error.name.substring(0,9) == "Sequelize"){
+                const message = [];
+                error.errors.forEach(element => {
+                    message.push(element.message);
+                });
+                throw new AppError(message, StatusCodes.BAD_REQUEST);
+            }
             throw error;
         }
     }
@@ -21,15 +30,21 @@ class CrudRepo {
                     id: id
                 }
             });
+            if (airport == null) {
+                throw new AppError(`Not able to find the resource`, StatusCodes.NOT_FOUND);
+            }
             return airport;
         } catch (error) {
-            console.log("Something went wrong while deleting data in repo layer");
             throw error;
         }
     }
 
     async update (id, data) {
         try {
+            const airport = await this.model.findByPk(id);
+            if (airport == null) {
+                throw new AppError(`Not able to find the resource`, StatusCodes.NOT_FOUND);
+            }
             const response = await this.model.update(data, {
                 where: {
                     id: id
@@ -37,7 +52,13 @@ class CrudRepo {
             });
             return response;
         } catch (error) {
-            console.log("Something went wrong while updating data in repo layer");
+            if (error.name.substring(0,9) == "Sequelize"){
+                const message = [];
+                error.errors.forEach(element => {
+                    message.push(element.message);
+                });
+                throw new AppError(message, StatusCodes.BAD_REQUEST);
+            }
             throw error;
         }
     }

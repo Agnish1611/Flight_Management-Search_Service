@@ -20,4 +20,8 @@ router.get('/',
 router.delete('/:id', 
     AirportController.deleteAirport);
 
+// /api/v1/airports/:id PATCH
+router.patch('/:id', 
+    AirportController.updateAirport);
+
 module.exports = router;
