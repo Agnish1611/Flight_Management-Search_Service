@@ -4,11 +4,11 @@ const bodyParser = require('body-parser');
 const { PORT } = require('./config/server-config');
 
 const apiRoutes = require('./routes');
-const db = require('./models');
+// const db = require('./models');
 
-const { Sequelize } = require('sequelize');
+// const { Sequelize } = require('sequelize');
 
-const { Flight, Airplane, Airport } = require('./models/index');
+// const { Flight, Airplane, Airport } = require('./models/index');
 
 const setupServer = async () => {
     const app = express();
