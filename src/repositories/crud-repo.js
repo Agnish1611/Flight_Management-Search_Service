@@ -24,16 +24,16 @@ class CrudRepo {
 
     async destroy (id) {
         try {
-            const airport = await this.model.findByPk(id);
+            const resource = await this.model.findByPk(id);
+            if (resource == null) {
+                throw new AppError(`Not able to find the resource`, StatusCodes.NOT_FOUND);
+            }
             await this.model.destroy({
                 where: {
                     id: id
                 }
             });
-            if (airport == null) {
-                throw new AppError(`Not able to find the resource`, StatusCodes.NOT_FOUND);
-            }
-            return airport;
+            return resource;
         } catch (error) {
             throw error;
         }
@@ -41,16 +41,16 @@ class CrudRepo {
 
     async update (id, data) {
         try {
-            const airport = await this.model.findByPk(id);
-            if (airport == null) {
+            const resource = await this.model.findByPk(id);
+            if (resource == null) {
                 throw new AppError(`Not able to find the resource`, StatusCodes.NOT_FOUND);
             }
-            const response = await this.model.update(data, {
+            await this.model.update(data, {
                 where: {
                     id: id
                 }
             });
-            return response;
+            return await this.model.findByPk(id);
         } catch (error) {
             if (error.name.substring(0,9) == "Sequelize"){
                 const message = [];
@@ -66,9 +66,11 @@ class CrudRepo {
     async get (id) {
         try {
             const response = await this.model.findByPk(id);
+            if (response == null) {
+                throw new AppError(`Not able to find the resource`, StatusCodes.NOT_FOUND);
+            }
             return response;
         } catch (error) {
-            console.log("Something went wrong while fetching data in repo layer");
             throw error;
         }
     }

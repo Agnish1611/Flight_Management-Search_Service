@@ -1,103 +1,66 @@
 const { AirportService } = require('../services');
+const { StatusCodes } = require('http-status-codes');
+const { SuccessResponse, ErrorResponse } = require('../utils/common/index');
 
 const airportService = new AirportService();
 
 async function createAirport(req, res) {
     try {
         const airports = await airportService.create(req.body);
-        return res.status(201).json({
-            data: airports,
-            success: true,
-            err: {},
-            description: 'Successfully created the airports'
-        })
+        SuccessResponse.data = airports;
+        SuccessResponse.message = 'Successfully created the airport';
+        return res.status(StatusCodes.CREATED).json(SuccessResponse);
     } catch (error) {
-        return res.status(500).json({
-            data: {},
-            success: false,
-            err: error,
-            description: 'Failed to create the airports'
-        });
+        ErrorResponse.error = error;
+        return res.status(error.statusCode).json(ErrorResponse);
     }
 }
 
 async function deleteAirport(req, res) {
     try {
         const airport = await airportService.destroy(req.params.id);
-        return res.status(200).json({
-            data: airport,
-            success: true,
-            err: {},
-            description: 'Successfully deleted the airport'
-        })
+        SuccessResponse.data = airport;
+        SuccessResponse.message = 'Successfully deleted the airport';
+        return res.status(StatusCodes.OK).json(SuccessResponse);
     } catch (error) {
-        return res.status(500).json({
-            data: {},
-            success: false,
-            err: error,
-            description: 'Failed to delete the airport'
-        });
+        ErrorResponse.error = error;
+        return res.status(error.statusCode).json(ErrorResponse);
     }
 }
 
 async function updateAirport(req, res) {
     try {
-        const airport = await airportService.update(req.params.id, {
-            name: req.body.name,
-            code: req.body.code,
-            address: req.body.address
-        });
-        return res.status(200).json({
-            data: airport,
-            success: true,
-            err: {},
-            description: 'Successfully updated the airport'
-        })
+        const airport = await airportService.update(req.params.id, req.body);
+        SuccessResponse.data = airport;
+        SuccessResponse.message = 'Successfully updated the airport';
+        return res.status(StatusCodes.OK).json(SuccessResponse);
     } catch (error) {
-        return res.status(500).json({
-            data: {},
-            success: false,
-            err: error,
-            description: 'Failed to update the airport'
-        });
+        ErrorResponse.error = error;
+        return res.status(error.statusCode).json(ErrorResponse);
     }
 }
 
 async function getAirport(req, res) {
     try {
         const airport = await airportService.get(req.params.id);
-        return res.status(200).json({
-            data: airport,
-            success: true,
-            err: {},
-            description: 'Successfully fetched the airport'
-        })
+        SuccessResponse.data = airport;
+        SuccessResponse.message = 'Successfully fetched the airport';
+        return res.status(StatusCodes.OK).json(SuccessResponse);
     } catch (error) {
-        return res.status(500).json({
-            data: {},
-            success: false,
-            err: error,
-            description: 'Failed to fetch the airport'
-        });
+        ErrorResponse.error = error;
+        return res.status(error.statusCode).json(ErrorResponse);
     }
 }
 
 async function getAirports(req, res) {
     try {
         const airports = await airportService.getAll(req.query);
-        return res.status(200).json({
-            data: airports,
-            success: true,
-            err: {},
-            description: 'Successfully fetched the airports'
-        })
+        SuccessResponse.data = airports;
+        SuccessResponse.message = 'Successfully fetched the airports';
+        return res.status(StatusCodes.OK).json(SuccessResponse);
     } catch (error) {
-        return res.status(500).json({
-            data: {},
-            success: false,
-            err: error,
-            description: 'Failed to fetch the airports'
-        });
+        ErrorResponse.error = error;
+        return res.status(error.statusCode).json(ErrorResponse);
     }
 }
 

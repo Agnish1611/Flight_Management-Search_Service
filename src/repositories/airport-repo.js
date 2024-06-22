@@ -8,13 +8,17 @@ class AirportRepo extends CrudRepo {
 
     async getAll (filter) {
         try {
-            let response = await Airport.findAll({
-                where: filter,
+            if (filter.address) {
+                return await Airport.findAll({
+                    where: filter,
+                    limit: 5
+                });
+            }
+            const response = await Airport.findAll({
                 limit: 5
             });
             return response;
         } catch (error) {
-            console.log("Something went wrong while fetching multiple data in repo layer");
             throw error;
         }
     }
