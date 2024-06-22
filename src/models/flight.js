@@ -15,6 +15,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'airplaneId',
         as: 'airplaneDetail'
       });
+      this.belongsTo(models.Airline, {
+        foreignKey: 'airlineId',
+        as: 'airlineDetail'
+      })
       this.belongsTo(models.Airport, {
         foreignKey: 'departureAirportId',
         as: 'departureAirport',
@@ -31,6 +35,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     airplaneId: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    airlineId: {
       type: DataTypes.INTEGER,
       allowNull: false
     },
