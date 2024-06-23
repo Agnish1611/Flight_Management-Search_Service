@@ -6,9 +6,10 @@ const AppError = require('../utils/errors/app-error');
 
 const { Op } = require('sequelize');
 
+const airportRepo = new AirportRepo();
+
 class AirportService extends CrudService {
     constructor (){
-        const airportRepo = new AirportRepo();
         super(airportRepo);
     }
 
@@ -22,7 +23,7 @@ class AirportService extends CrudService {
                     }
                 }
             }
-            const airport = await this.airportRepo.getAll(filter);
+            const airport = await airportRepo.getAll(filter);
             return airport;
         } catch (error) {
             throw new AppError('Cannot fetch the airports', StatusCodes.INTERNAL_SERVER_ERROR);

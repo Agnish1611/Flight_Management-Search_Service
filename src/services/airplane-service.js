@@ -4,15 +4,16 @@ const CrudService = require('./crud-service');
 const { StatusCodes } = require('http-status-codes');
 const AppError = require('../utils/errors/app-error');
 
+const airplaneRepo = new AirplaneRepo();
+
 class AirplaneService extends CrudService {
     constructor (){
-        this.airplaneRepo = new AirplaneRepo();
-        super(this.airplaneRepo);
+        super(airplaneRepo);
     }
 
     async getAll () {
         try {
-            const airplanes = await this.airplaneRepo.getAll();
+            const airplanes = await airplaneRepo.getAll();
             return airplanes;
         } catch (error) {
             throw new AppError('Cannot fetch the airplanes', StatusCodes.INTERNAL_SERVER_ERROR);
@@ -20,4 +21,4 @@ class AirplaneService extends CrudService {
     }
 }
 
-module.exports = AirlineService;
+module.exports = AirplaneService;

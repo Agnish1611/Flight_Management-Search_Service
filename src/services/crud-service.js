@@ -3,7 +3,7 @@ const AppError = require('../utils/errors/app-error');
 
 class CrudService {
     constructor (repo){
-        this.repo = new repo();
+        this.repo = repo;
     }
 
     async create (data) {
