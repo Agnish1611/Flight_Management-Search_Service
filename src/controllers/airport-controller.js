@@ -20,7 +20,7 @@ async function deleteAirport(req, res) {
     try {
         const airport = await airportService.destroy(req.params.id);
         SuccessResponse.data = airport;
-        SuccessResponse.message = 'Successfully deleted the airport';
+        SuccessResponse.message = 'Successfully deleted the airport'; 
         return res.status(StatusCodes.OK).json(SuccessResponse);
     } catch (error) {
         ErrorResponse.error = error;

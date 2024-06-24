@@ -7,9 +7,9 @@ const flightRoutes = require('./flight-routes');
 
 const router = express.Router();
 
-router.use('/airports', airportRoutes);
-router.use('/airplanes', airplaneRoutes);
-router.use('/airlines', airlineRoutes);
-router.use('/flights', flightRoutes);
+router.use('/airport', airportRoutes);
+router.use('/airplane', airplaneRoutes);
+router.use('/airline', airlineRoutes);
+router.use('/flight', flightRoutes);
 
 module.exports = router;
