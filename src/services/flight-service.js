@@ -13,55 +13,56 @@ class FlightService extends CrudService {
         super(flightRepo);
     }
 
-    async getAll (data) {
+    async getAll (query) {
         let filter = {};
-        let trip = {};            
+        let trip = {};
+        let sort = [];   
         
-        if (data.trip){
-            const [departureAirport, arrivalAirport] = data.trip.split("-");
+        if (query.trip){
+            const [departureAirport, arrivalAirport] = query.trip.split("-");
             trip.departureAirport = departureAirport;
             trip.arrivalAirport = arrivalAirport;
         }
 
-        if(data.airline) {
-            trip.airline = data.airline;
+        if(query.airline) {
+            trip.airline = query.airline;
         }
 
         let priceFilter = [];
-        if(data.minPrice) {
-            priceFilter.push({price: {[Op.gte]: data.minPrice}});
+        if(query.minPrice) {
+            priceFilter.push({price: {[Op.gte]: query.minPrice}});
         }
-        if(data.maxPrice) {
-            priceFilter.push({price: {[Op.lte]: data.maxPrice}});
+        if(query.maxPrice) {
+            priceFilter.push({price: {[Op.lte]: query.maxPrice}});
         }
         Object.assign(filter, {[Op.and]: priceFilter});
             
-        if (data.date && !data.arrivalTime && !data.departureTime){
+        if (query.date && !query.arrivalTime && !query.departureTime){
             filter.departureTime = {
-                [Op.between]: [new Date(data.date+"T00:01:00+05:30"), new Date(data.date+"T23:59:00+05:30")]
+                [Op.between]: [new Date(query.date+"T00:01:00+05:30"), new Date(query.date+"T23:59:00+05:30")]
             };
         }
 
-        if (data.arrivalTime){
-            switch(data.arrivalTime){
+        if (query.arrivalTime){
+            switch(query.arrivalTime){
                 case "MOR":
                     filter.arrivalTime = {
-                        [Op.between]: [new Date(data.date+"T00:01:00+05:30"), new Date(data.date+"T05:59:00+05:30")]
+                        [Op.between]: [new Date(query.date+"T00:01:00+05:30"), new Date(query.date+"T05:59:00+05:30")]
                     };
                     break;
                 case "NOO":
                     filter.arrivalTime = {
-                        [Op.between]: [new Date(data.date+"T06:00:00+05:30"), new Date(data.date+"T12:00:00+05:30")]
+                        [Op.between]: [new Date(query.date+"T06:00:00+05:30"), new Date(query.date+"T12:00:00+05:30")]
                     };
                     break;
                 case "EVE":
                     filter.arrivalTime = {
-                        [Op.between]: [new Date(data.date+"T12:00:00+05:30"), new Date(data.date+"T18:00:00+05:30")]
+                        [Op.between]: [new Date(query.date+"T12:00:00+05:30"), new Date(query.date+"T18:00:00+05:30")]
                     };
                     break;
                 case "NIG":
                     filter.arrivalTime = {
-                        [Op.between]: [new Date(data.date+"T18:01:00+05:30"), new Date(data.date+"T23:59:00+05:30")]
+                        [Op.between]: [new Date(query.date+"T18:01:00+05:30"), new Date(query.date+"T23:59:00+05:30")]
                     };
                     break;
                 default:
@@ -69,33 +70,39 @@ class FlightService extends CrudService {
             }
         }
 
-        if (data.departureTime){
-            switch(data.departureTime){
+        if (query.departureTime){
+            switch(query.departureTime){
                 case "MOR":
                     filter.departureTime = {
-                        [Op.between]: [new Date(data.date+"T00:01:00+05:30"), new Date(data.date+"T05:59:00+05:30")]
+                        [Op.between]: [new Date(query.date+"T00:01:00+05:30"), new Date(query.date+"T05:59:00+05:30")]
                     };
                     break;
                 case "NOO":
                     filter.departureTime = {
-                        [Op.between]: [new Date(data.date+"T06:00:00+05:30"), new Date(data.date+"T12:00:00+05:30")]
+                        [Op.between]: [new Date(query.date+"T06:00:00+05:30"), new Date(query.date+"T12:00:00+05:30")]
                     };
                     break;
                 case "EVE":
                     filter.departureTime = {
-                        [Op.between]: [new Date(data.date+"T12:00:00+05:30"), new Date(data.date+"T18:00:00+05:30")]
+                        [Op.between]: [new Date(query.date+"T12:00:00+05:30"), new Date(query.date+"T18:00:00+05:30")]
                     };
                     break;
                 case "NIG":
                     filter.departureTime = {
-                        [Op.between]: [new Date(data.date+"T18:01:00+05:30"), new Date(data.date+"T23:59:00+05:30")]
+                        [Op.between]: [new Date(query.date+"T18:01:00+05:30"), new Date(query.date+"T23:59:00+05:30")]
                     };
                     break;
             }
         }
-        console.log(data);
+
+        if(query.sort) {
+            const params = query.sort.split(',');
+            const sortFilters = params.map((param) => param.split('_'));
+            sort = sortFilters;
+        }
+
         try {
-            const response = await flightRepo.getAll(trip, filter);
+            const response = await flightRepo.getAll(trip, filter, sort);
             return response; 
         } catch (error) {
             throw new AppError('Cannot fetch the airports', StatusCodes.INTERNAL_SERVER_ERROR);

@@ -6,7 +6,7 @@ class FlightRepo extends CrudRepo {
         super(Flight);
     }
 
-    async getAll (trip, filter) {
+    async getAll (trip, filter, sort) {
         try {
             const departureAirport = await Airport.findOne({
                 where: {
@@ -31,6 +31,7 @@ class FlightRepo extends CrudRepo {
 
             const response = await Flight.findAll({
                 where: filter,
+                order: sort,
                 include: [
                     {
                         model: Airplane,
