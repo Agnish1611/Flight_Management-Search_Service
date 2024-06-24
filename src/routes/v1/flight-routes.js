@@ -1,27 +1,27 @@
 const express = require('express');
 
-const { AirportController } = require('../../controllers');
+const { FlightController } = require('../../controllers');
 
 const router = express.Router();
 
 // /api/v1/airports POST
 router.post('/', 
-    AirportController.createAirport);
+    FlightController.createFlight);
 
 // /api/v1/airports/:id GET
 router.get('/:id', 
-    AirportController.getAirport);
+    FlightController.getFlight);
 
-// /api/v1/airports?search GET
+// /api/v1/airports GET
 router.get('/', 
-    AirportController.getAirports);
+    FlightController.getFlights);
 
 // /api/v1/airports/:id DELETE
 router.delete('/:id', 
-    AirportController.deleteAirport);
+    FlightController.deleteFlight);
 
 // /api/v1/airports/:id PATCH
 router.patch('/:id', 
-    AirportController.updateAirport);
+    FlightController.updateFlight);
 
 module.exports = router;
