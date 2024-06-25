@@ -7,7 +7,8 @@ const { validateCreateRequest } = require('../../middlewares/airplane-middleware
 const router = express.Router();
 
 // /api/v1/airplane POST
-router.post('/', 
+router.post('/',
+    validateCreateRequest, 
     AirplaneController.createAirplane);
 
 // /api/v1/airplane/:id GET
