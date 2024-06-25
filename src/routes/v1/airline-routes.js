@@ -8,7 +8,6 @@ const router = express.Router();
 
 // /api/v1/airline POST
 router.post('/', 
-    validateCreateRequest,
     AirlineController.createAirline);
 
 // /api/v1/airline/:id GET
