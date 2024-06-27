@@ -52,7 +52,7 @@ class CrudRepo {
             });
             return await this.model.findByPk(id);
         } catch (error) {
-            if (error.name.substring(0,9) == "Sequelize"){
+            if (error.name == 'SequelizeValidationError' || error.name == 'SequelizeUniqueConstraintError'){
                 const message = [];
                 error.errors.forEach(element => {
                     message.push(element.message);

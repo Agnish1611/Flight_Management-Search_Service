@@ -6,6 +6,22 @@ class FlightRepo extends CrudRepo {
         super(Flight);
     }
 
+    async create (data) {
+        try {
+            const response = await Flight.create(data);
+            return response;
+        } catch (error) {
+            if (error.name == 'SequelizeValidationError' || error.name == 'SequelizeUniqueConstraintError'){
+                const message = [];
+                error.errors.forEach(element => {
+                    message.push(element.message);
+                });
+                throw new AppError(message, StatusCodes.BAD_REQUEST);
+            }
+            throw error;
+        }
+    }
+
     async getAll (trip, filter, sort) {
         try {
             const departureAirport = await Airport.findOne({

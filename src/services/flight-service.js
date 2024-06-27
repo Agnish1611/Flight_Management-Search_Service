@@ -6,11 +6,29 @@ const AppError = require('../utils/errors/app-error');
 
 const { Op } = require('sequelize');
 
+const { Airplane } = require('../models/index');
+
 const flightRepo = new FlightRepo();
 
 class FlightService extends CrudService {
     constructor (){
         super(flightRepo);
+    }
+
+    async create (data) {
+        try {
+            const airplane = await Airplane.findByPk(data.airplaneId);
+            const seats = await airplane.getSeats();
+            const totalSeats = seats.length;
+            const response = await flightRepo.create({ ...data, totalSeats});
+            return response;
+        } catch (error) {
+            console.log(error);
+            if (error.statusCode == StatusCodes.BAD_REQUEST){
+                throw error;
+            }
+            throw new AppError('Cannot create the resource', StatusCodes.INTERNAL_SERVER_ERROR);
+        }
     }
 
     async getAll (query) {
@@ -94,6 +112,10 @@ class FlightService extends CrudService {
                     break;
             }
         }
+
+        // if (query.passengers){
+        //     const seats = 
+        // }
 
         if(query.sort) {
             const params = query.sort.split(',');
