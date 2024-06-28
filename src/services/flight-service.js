@@ -113,9 +113,11 @@ class FlightService extends CrudService {
             }
         }
 
-        // if (query.passengers){
-        //     const seats = 
-        // }
+        if (query.passengers){
+            filter.totalSeats = {
+                [Op.gte]: query.passengers
+            }
+        }
 
         if(query.sort) {
             const params = query.sort.split(',');
